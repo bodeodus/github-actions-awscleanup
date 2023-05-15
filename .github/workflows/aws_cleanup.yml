@@ -1,8 +1,14 @@
 on:
   workflow_dispatch:
   
-  jobs:
+permissions:
+    id-token: write
+jobs:
     aws-cleanup:
-    runs-on: ubuntu-latest
-    steps:
-      -
+      runs-on: ubuntu-latest
+      steps:
+       - name: Authenticate to AWS using OpenID Connect
+         uses: aws-actions/configure-aws-credentials@v2
+         with:
+           role-to-assume: arn:aws:iam::084963261788:role/github-actions-cleanup
+           aws-region: eu-west-1
