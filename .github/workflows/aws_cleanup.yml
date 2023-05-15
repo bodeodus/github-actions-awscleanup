@@ -1,0 +1,8 @@
+on:
+  workflow_dispatch:
+  
+  jobs:
+    aws-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      -
