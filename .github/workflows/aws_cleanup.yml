@@ -7,7 +7,25 @@ permissions:
   id-token: write
   
 jobs:
-  aws-cleanup:
+  aws-cleanup-ec2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Source Code from GitHub
+        uses: actions/checkout@v3.5.2
+      - name: Installing AWS EC2 Module
+        shell: pwsh
+        run: |
+          Install-Module -Name AWS.Tools.EC2 -Force
+      - name: Authenticate to AWS using OpenID Connect
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::084963261788:role/github-actions-cleanup
+          aws-region: eu-west-1
+      - name: Cleanup AWS EC2 Resouces
+        shell: pwsh
+        run: |
+          ./aws-cleanup-ec2.ps1
+  aws-cleanup-stepfunctions:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Source Code from GitHub
