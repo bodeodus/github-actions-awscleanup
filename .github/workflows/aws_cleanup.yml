@@ -8,8 +8,18 @@ jobs:
   aws-cleanup:
     runs-on: ubuntu-latest
     steps:
+      - name: Clone Source Code from GitHub
+        uses: actions/checkout@v3.5.2
+      - name: Installing AWS Step Functions Module
+        shell: pwsh
+        run: |
+          Install-Module -Name AWS.Tools.StepFunctions -Force
       - name: Authenticate to AWS using OpenID Connect
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::084963261788:role/github-actions-cleanup
           aws-region: eu-west-1
+      - name: Cleanup AWS Step Functions Resouces
+        shell: pwsh
+        run: |
+          ./aws-cleanup-stepfunctions.ps1
